@@ -1,0 +1,10 @@
+
+// PLACEHOLDERS
+// Featured image on main node content pages
+%field-name-field-featured-image {
+  margin-bottom: $spacer-3;
+}
+
+.field-name-field-featured-image {
+  @extend %field-name-field-featured-image;
+}

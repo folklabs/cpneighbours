@@ -1,0 +1,73 @@
+// Todo: how to define these better? Rename file?
+//
+
+$list-row-divider: 1px $col-content-lightest solid;
+
+%ol-categories {
+  margin-bottom: 2em;
+
+  h2 {
+    @extend %ol-panel-title;
+  }
+
+  a {
+    display: block;
+    min-height: 2.5em;
+    padding: 3.5% 5% 1.5%;
+
+    .active {
+      background-color: $col-links-lightest;
+      color: $col-links-darker;
+    }
+
+    &:hover {
+      background-color: $col-links-lightest;
+      color: $col-links-darkest;
+    }
+
+    &:active {
+      background-color: $col-links;
+      color: $white;
+    }
+  }
+
+  // The "View all" option
+  .view-header {
+    border-bottom: 1px solid $col-content-lighter;
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
+// The normal menu items
+%ol-category {
+  border-bottom: $list-row-divider;
+}
+
+%ol-facet {
+  margin-bottom: 2em;
+
+  h2 {
+    @extend %ol-panel-title;
+  }
+
+  // Todo: handle sub-categories
+  ul li {
+    list-style-type: none;
+    margin: 0 0 0 1;
+  }
+}
+
+.ol-facet {
+  @extend %ol-facet;
+}
+
+.ol-2nd-nav-menu {
+  @extend %ol-categories;
+
+  .views-row {
+    @extend %ol-category;
+  }
+}

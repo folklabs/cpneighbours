@@ -1,0 +1,52 @@
+
+.main .button-group > li > button,
+.main .button-group > li .button {
+  background-color: transparent;
+  color: $primary-color;
+
+  a {
+    color: $primary-color;
+  }
+}
+
+.main .button-group {
+  border-bottom: 1px solid $silver;
+  margin: 1.5em 0 rem-calc(24 0);
+
+  li {
+    border-radius: $global-radius $global-radius 0 0;
+    line-height: $base-line-height;
+    margin-bottom: -1px;
+    margin-right: remcalc(4);
+
+    .button {
+      border-radius: $global-radius $global-radius 0 0;
+      padding: remcalc(6 16);
+      margin: 0;
+      font-weight: $font-weight-bold;
+      font-size: $base-font-size;
+
+      > a {
+        color: $primary-color;
+
+      }
+
+      &:hover {
+        background-color: transparentize($secondary-color, .8);
+      }
+    }
+
+    .active {
+      background-color: $main-bg;
+      border-top: 1px solid $silver;
+      border-right: 1px solid $silver;
+      border-left: 1px solid $silver;
+      border-bottom: 5px solid $main-bg;
+
+      > a {
+        color: $secondary-color;
+      }
+    }
+  }
+}
+

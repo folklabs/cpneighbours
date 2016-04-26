@@ -1,0 +1,25 @@
+
+// Fixes for social media service links at the bottom of node content
+.pane-node-body {
+  border-bottom: $divider-style $divider-width-light $divider-color-heavy;
+  margin-bottom: $spacer-2;
+  padding-bottom: ($spacer-3 - $divider-width-light);
+}
+
+// Adjust spacing on embedded social media iframes
+.pane-node-links .links {
+  margin-bottom: $spacer-3;
+
+  .service-links-google-plus-one {
+    margin-top: rem-calc(2);
+  }
+
+  .service-links-facebook-share {
+    margin: rem-calc(0 20 0 0);
+  }
+
+  .service-links-twitter-widget {
+    margin-top: rem-calc(2);
+  }
+}
+

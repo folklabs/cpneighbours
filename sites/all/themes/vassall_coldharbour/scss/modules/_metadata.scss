@@ -1,0 +1,26 @@
+// For news and other content metadata
+
+.ol-meta-data {
+  margin: 0 0 1em 74px;
+  // .ol-name-date {}
+  .ol-username {
+    // @include typography-field-heading;
+  }
+}
+
+.ol-comments {
+  clear: both;
+  margin-left: 0;
+  margin-top: 10px;
+}
+
+.ol-comment-count {
+  // @include typography-field-heading;
+  color: $col-links;
+  display: inline;
+  font-size: 1.6em;
+}
+
+.openlocal-avatar-small {
+  float: left;
+}

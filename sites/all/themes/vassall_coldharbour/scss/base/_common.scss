@@ -1,0 +1,147 @@
+// Common abstract classes to extend or parametrics are stored here.
+
+// Example parametrics.
+// ------------------------------------------------------
+// %font-FONTNAME   {}
+// %font-sans-serif { font-family: sans-serif; }
+// %font-serif      { font-family: serif; }
+
+// CML Custom settings
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Base unit scaling series
+$base-1: rem-calc(3);
+$base-2: ($base-1 * 2); // 6
+$base-3: ($base-2 * 2); // 12
+$base-4: ($base-3 * 2); // 24
+$base-5: ($base-4 * 2); // 48
+$base-6: ($base-5 * 2); // 96
+
+// Header and footer colours
+$footer-color: $silver;
+$footer-columns-color: $white-smoke;
+
+// Divider styles
+// Set global style for dividers
+$divider-style: solid;
+// Set colour of heavy and light weight dividers
+$divider-color-heavy: $oil;
+$divider-color-light: $vapor;
+// Set width of heavy and light weight dividers
+$divider-width-heavy: $base-2;
+$divider-width-light: rem-calc(1);
+
+// Panel variables
+$panel-background-color: transparentize($primary-color, 0.9);
+
+
+// Spacing variables
+$spacer-0: rem-calc(0);
+$spacer-1: $base-6; // 96px
+$spacer-2: $base-5; // 48px
+$spacer-3: $base-4; // 24px
+$spacer-4: $base-3; // 12px
+$spacer-5: $base-2; // 6px
+
+//-----------------------------------------------------------------------------
+// Views metadata field placeholders
+
+// Field item labels for light backgrounds
+%vac-field-label-dark {
+  font-family: $header-font-family;
+  font-size: $small-font-size;
+  font-weight: $font-weight-bold;
+  text-transform: lowercase;
+  color: $iron;
+}
+
+// Field item labels for dark backgrounds
+%vac-field-label-light {
+  font-family: $header-font-family;
+  font-size: $small-font-size;
+  font-weight: $font-weight-bold;
+  text-transform: lowercase;
+  color: $white;
+}
+
+// Field item content for light backgrounds
+%vac-field-content-dark {
+  font-family: $header-font-family;
+  font-size: $small-font-size;
+  font-weight: $font-weight-normal;
+  color: $oil;
+}
+
+// Field item content for dark backgrounds
+%vac-field-content-light {
+  font-family: $header-font-family;
+  font-size: $small-font-size;
+  font-weight: $font-weight-normal;
+  color: $white;
+}
+
+// Title field content
+%vac-field-title {
+  font-size: $h4-font-size;
+  line-height: $h3-font-size;
+  font-family: $header-font-family;
+  font-weight: $font-weight-bold;
+}
+
+// Description / summary field teaser content
+%vac-description-content-dark {
+  font-style: $paragraph-font-size;
+  font-family: $body-font-family;
+  font-weight: $font-weight-normal;
+  color: $iron;
+}
+
+
+//-----------------------------------------------------------------------------
+// View general placeholders
+%vac-view-header {
+  display: block;
+  font-size: $h4-font-size;
+  font-family: $header-font-family;
+  font-weight: $font-weight-bold;
+  border-bottom: $divider-style $divider-color-heavy $divider-width-light;
+  padding-bottom: ($spacer-5 - $divider-width-light);
+  color: $oil;
+}
+
+// View group header
+%vac-view-group-header {
+  display: block;
+  font-size: $h4-font-size;
+  font-family: $header-font-family;
+  font-weight: $font-weight-bold;
+  border-top: $divider-style $divider-color-heavy $divider-width-heavy;
+  padding: (($spacer-4 - $divider-width-heavy) $spacer-0);
+  margin-top: $spacer-3;
+}
+
+//-----------------------------------------------------------------------------
+// Labels
+
+// Warning label - small
+%vac-label-warning-small {
+  font-family: $header-font-family;
+  font-weight: $font-weight-bold;
+  @include label(rem-calc(6 12 5 12), rem-calc(12), $warning-color, $global-rounded);
+}
+
+// Warning label - normal
+%vac-label-warning-normal {
+  font-family: $header-font-family;
+  font-weight: $font-weight-bold;
+  @include label(rem-calc(8 18 7 18), $paragraph-font-size, $warning-color, $global-rounded);
+}
+
+
+
+
+
+
+
+
+

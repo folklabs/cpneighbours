@@ -1,0 +1,56 @@
+// ----------------------------------------------------------------------------
+// NEWS HIGHLIGHT (FRONT PAGE CAROUSEL)
+
+$highlight-title-background: transparentize($col-links, .3);
+$highlight-title-background-hover: transparentize($main-bg, .3);
+
+// The Home page main news highlight carousel zone
+
+.view-openlocal-highlight {
+  background-color: $col-content-lightest;
+  margin-bottom: rem-calc(16);
+  max-width: rem-calc(580);
+  position: relative;
+
+  .views-field-title {
+    @include typography-highlight-heading;
+    bottom: rem-calc(24);
+    color: $main-bg;
+    margin-left: rem-calc(12);
+    position: absolute;
+
+    a {
+      background-color: $highlight-title-background;
+      box-decoration-break: clone;
+      // Add a bit of padding on each line even when link text wraps
+      box-shadow: rem-calc(12) 0 0 $highlight-title-background, rem-calc(-12) 0 0 $highlight-title-background;
+      line-height: 1em;
+
+      &:link {
+        color: $main-bg;
+      }
+
+      &:visited {
+        color: $main-bg;
+      }
+
+      &:hover {
+        background-color: $highlight-title-background-hover;
+        box-shadow: rem-calc(12) 0 0 $highlight-title-background-hover, rem-calc(-12) 0 0 $highlight-title-background-hover;
+        color: $col-links-darker;
+      }
+    }
+  }
+
+  .views_slideshow_slide_counter {
+    @include typography-grid-list-body;
+    background-color: $highlight-title-background-hover;
+    display: block;
+    left: 0;
+    padding: .25em 5px;
+    position: absolute;
+    top: 0;
+    z-index: 10000;
+  }
+}
+

@@ -1,0 +1,55 @@
+// Non-modular or client styles for the .l-content region.
+
+.l-main {
+  padding-bottom: 40px;
+
+  background-color: $main-bg;
+}
+
+.page-map {
+  .breadcrumbs {
+    display: none;
+  }
+
+  .l-main {
+    height: 500px;
+    max-width: 100%;
+
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+
+    .columns {
+      padding: 0 0 0 0;
+    }
+
+    .main {
+      margin: 0 0 0 0;
+    }
+
+    .title {
+      display: none;
+      // position: fixed;
+      // top: 10px;
+      // left: 10px;
+    }
+  }
+
+  .view-ol-map {
+    position: fixed;
+    // float: left;
+    top: 77px;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+
+    .leaflet-container {
+      height: 400px;
+    }
+  }
+
+  .l-footer-columns,
+  .l-footer {
+    display: none;
+  }
+}

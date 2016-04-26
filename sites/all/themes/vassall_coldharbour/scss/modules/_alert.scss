@@ -1,0 +1,25 @@
+// SITE ALERT BOXES
+
+// Set text colour of links inside alert boxes to be visible
+.alert-box {
+  @extend .radius;
+
+  a {
+    color: transparentize($white, .2);
+
+    &:links,
+    &:visited {
+      color: $white;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:active {
+      color: $oil;
+      text-decoration: underline;
+    }
+  }
+}
+

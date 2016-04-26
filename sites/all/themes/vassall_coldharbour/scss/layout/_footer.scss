@@ -1,0 +1,36 @@
+// Non-modular or client styles for .l-footer region.
+
+.l-footer-columns {
+  margin-top: rem-calc(144);
+  padding: rem-calc(48 0);
+  background-color: $footer-columns-color;
+}
+footer.l-footer.panel {
+  background-color: $footer-color;
+  margin-bottom: 0;
+}
+section.l-footer-columns,
+footer {
+  font-family: $font-family-sans-serif;
+
+  h2 {
+    font-size: $h6-font-size;
+    color: mix($aluminum, $secondary-color, 50%);
+  }
+
+  a {
+    // Change colour for footer links to darker
+    color: mix($primary-color, $secondary-color, 80%);
+  }
+
+  // Override bullet-list styles in footer menu listings
+  .item-list ul,
+  ul.menu {
+    list-style: none;
+    margin-left: 0;
+
+    li {
+      margin-left: 0;
+    }
+  }
+}

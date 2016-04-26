@@ -1,0 +1,33 @@
+// Styles for all fields
+%ol-field {
+  padding: $pane-field-padding;
+}
+
+%ol-panel-field {
+  @extend %ol-field;
+  background-color: $panel-bg;
+}
+
+
+//-----------------------------------------------------------------------------
+// Drupal integration
+
+// Float author avatar next to author name in news article teasers
+.views-field-avatar .openlocal-avatar-micro {
+  display: inline-block;
+  float: left;
+  margin-right: rem-calc(8);
+}
+
+.field-name-field-ol-address {
+  @extend %ol-field;
+}
+
+.field-name-field-ol-event-date {
+  @extend %ol-panel-field;
+
+  .field-label {
+    @extend %ol-field-label;
+    padding: 0;
+  }
+}

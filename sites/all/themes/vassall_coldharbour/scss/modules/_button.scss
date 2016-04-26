@@ -1,0 +1,75 @@
+
+$ol-action-button-padding: .3em;
+
+%ol-action-button {
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: $ol-action-button-padding;
+  padding-top: $ol-action-button-padding;
+  width: 80%;
+
+  a {
+    // height: 2em
+    border-radius: .25em;
+    display: block;
+    font-size: 1.25 * $base-font-size;
+    font-weight: 400;
+    padding: .3em 10px;
+    text-align: center;
+
+    &:link,
+    &:visited {
+      @include gradient-vertical($col-content-lightest, $body-bg);
+      border: solid 1px $col-content;
+      color: $col-content-darker;
+    }
+
+    &:hover {
+      @include gradient-vertical($body-bg, $white);
+      border: solid 1px $col-content;
+      color: $col-content;
+    }
+
+    &:active {
+      @include glow-inner($col-content-lighter, 10);
+      @include gradient-vertical($body-bg, $col-content-lightest);
+      border: solid 1px $white;
+      color: $col-content-darkest;
+    }
+    // edit: added z-index
+    z-index: 1;
+  }
+}
+
+%ol-action-box {
+  background-color: $col-content-lightest;
+  margin-bottom: 1.5em;
+  padding: .5em 10px;
+}
+
+.ol-action-button {
+  @extend %ol-action-button;
+}
+
+//-----------------------------------------------------------------------------
+// Drupal integration
+
+.ol-action-box,
+.menu-block-wrapper {
+  @extend %ol-action-box;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    @extend %ol-action-button;
+  }
+}
+
+button {
+  @extend button;
+  @extend .radius;
+}
