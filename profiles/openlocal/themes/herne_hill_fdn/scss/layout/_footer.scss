@@ -1,0 +1,23 @@
+// Non-modular or client styles for .l-footer region.
+
+$footer-background-color: #4d3d44;
+
+.l-footer {
+  margin-bottom: 0;
+
+  .row {
+    padding-bottom: 40px;
+
+    background-color: $footer-background-color;
+    color: $col-content-lighter;
+
+    a {
+      color: $col-content-lightest;
+    }
+  }
+}
+
+.l-footer.panel {
+    background-color: transparent;
+  }
+

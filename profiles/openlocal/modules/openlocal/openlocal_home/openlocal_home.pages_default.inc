@@ -1,0 +1,346 @@
+<?php
+/**
+ * @file
+ * openlocal_home.pages_default.inc
+ */
+
+/**
+ * Implements hook_default_page_manager_pages().
+ */
+function openlocal_home_default_page_manager_pages() {
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'home';
+  $page->task = 'page';
+  $page->admin_title = 'Home';
+  $page->admin_description = 'The site homepage.';
+  $page->path = 'frontpage';
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
+  $page->menu = array(
+    'type' => 'normal',
+    'title' => 'Home',
+    'name' => 'main-menu',
+    'weight' => '0',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_home_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'home';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Panel',
+    'no_blocks' => 1,
+    'pipeline' => 'ipe',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+  );
+  $display = new panels_display();
+  $display->layout = 'radix_harris';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'header' => NULL,
+      'column1' => NULL,
+      'column2' => NULL,
+      'contentmain' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Home';
+  $display->uuid = '251a38a8-dfb5-473d-9a41-d1f628272d55';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-a246a9c6-5eac-4d90-8d64-fd126415a96b';
+  $pane->panel = 'column1';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'openlocal_event-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'view_mode' => 'teaser',
+    'widget_title' => NULL,
+    'items_per_page' => NULL,
+    'exposed' => array(
+      'sort_by' => NULL,
+      'sort_order' => NULL,
+    ),
+    'use_pager' => NULL,
+    'pager_id' => NULL,
+    'offset' => NULL,
+    'link_to_view' => NULL,
+    'more_link' => NULL,
+    'path' => NULL,
+    'view_settings' => 'fields',
+    'header_type' => 'none',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'a246a9c6-5eac-4d90-8d64-fd126415a96b';
+  $display->content['new-a246a9c6-5eac-4d90-8d64-fd126415a96b'] = $pane;
+  $display->panels['column1'][0] = 'new-a246a9c6-5eac-4d90-8d64-fd126415a96b';
+  $pane = new stdClass();
+  $pane->pid = 'new-6dcc8b69-71fe-4542-b9f7-86c7e7a2b233';
+  $pane->panel = 'column1';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'openlocal_twitter-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'view_settings' => 'fields',
+    'header_type' => 'none',
+    'view_mode' => 'teaser',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '6dcc8b69-71fe-4542-b9f7-86c7e7a2b233';
+  $display->content['new-6dcc8b69-71fe-4542-b9f7-86c7e7a2b233'] = $pane;
+  $display->panels['column1'][1] = 'new-6dcc8b69-71fe-4542-b9f7-86c7e7a2b233';
+  $pane = new stdClass();
+  $pane->pid = 'new-9e33fb68-599d-42b6-a481-5ae6620398db';
+  $pane->panel = 'column2';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'openlocal_alert-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'items_per_page' => '1',
+    'override_title' => '',
+    'override_title_text' => '',
+    'view_mode' => 'teaser',
+    'widget_title' => 'Local alerts',
+    'exposed' => array(
+      'sort_by' => NULL,
+      'sort_order' => NULL,
+    ),
+    'use_pager' => NULL,
+    'pager_id' => NULL,
+    'offset' => NULL,
+    'link_to_view' => NULL,
+    'more_link' => NULL,
+    'path' => NULL,
+    'view_settings' => 'fields',
+    'header_type' => 'none',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '9e33fb68-599d-42b6-a481-5ae6620398db';
+  $display->content['new-9e33fb68-599d-42b6-a481-5ae6620398db'] = $pane;
+  $display->panels['column2'][0] = 'new-9e33fb68-599d-42b6-a481-5ae6620398db';
+  $pane = new stdClass();
+  $pane->pid = 'new-00a30d24-c35d-44c2-81f7-8d6ac52ae6b1';
+  $pane->panel = 'column2';
+  $pane->type = 'block';
+  $pane->subtype = 'menu-menu-ol-home-actions';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => 'ol-action-box',
+  );
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '00a30d24-c35d-44c2-81f7-8d6ac52ae6b1';
+  $display->content['new-00a30d24-c35d-44c2-81f7-8d6ac52ae6b1'] = $pane;
+  $display->panels['column2'][1] = 'new-00a30d24-c35d-44c2-81f7-8d6ac52ae6b1';
+  $pane = new stdClass();
+  $pane->pid = 'new-b6884e53-690d-448f-9d43-b2f970d3d357';
+  $pane->panel = 'contentmain';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'openlocal_highlight-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'view_mode' => 'teaser',
+    'widget_title' => NULL,
+    'items_per_page' => NULL,
+    'exposed' => array(
+      'sort_by' => NULL,
+      'sort_order' => NULL,
+    ),
+    'use_pager' => NULL,
+    'pager_id' => NULL,
+    'offset' => NULL,
+    'link_to_view' => NULL,
+    'more_link' => NULL,
+    'path' => NULL,
+    'view_settings' => 'fields',
+    'header_type' => 'none',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'b6884e53-690d-448f-9d43-b2f970d3d357';
+  $display->content['new-b6884e53-690d-448f-9d43-b2f970d3d357'] = $pane;
+  $display->panels['contentmain'][0] = 'new-b6884e53-690d-448f-9d43-b2f970d3d357';
+  $pane = new stdClass();
+  $pane->pid = 'new-cadbbc65-5c2f-4a6b-8b0a-bafcad6e5cd7';
+  $pane->panel = 'contentmain';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'openlocal_news-homepage_news_articles';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'use_pager' => 0,
+    'pager_id' => '0',
+    'items_per_page' => '3',
+    'fields_override' => array(
+      'nid' => 0,
+      'field_featured_image' => 1,
+      'title' => 0,
+      'body' => 0,
+      'created' => 0,
+      'name' => 0,
+      'field_user_picture' => 0,
+      'comment_count' => 0,
+      'nothing' => 1,
+    ),
+    'exposed' => array(
+      'Is Featured' => 'All',
+      'sort_order' => 'DESC',
+      'sort_by' => 'created',
+    ),
+    'override_title' => '',
+    'override_title_text' => '',
+    'view_settings' => 'fields',
+    'header_type' => 'none',
+    'view_mode' => 'teaser',
+    'widget_title' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'cadbbc65-5c2f-4a6b-8b0a-bafcad6e5cd7';
+  $display->content['new-cadbbc65-5c2f-4a6b-8b0a-bafcad6e5cd7'] = $pane;
+  $display->panels['contentmain'][1] = 'new-cadbbc65-5c2f-4a6b-8b0a-bafcad6e5cd7';
+  $pane = new stdClass();
+  $pane->pid = 'new-8af9868e-9f9b-4e56-995c-25b4ea2f9b0a';
+  $pane->panel = 'contentmain';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'More news link',
+    'title' => '',
+    'body' => '<p><h4><a href="/news">More news...</a></h4></p>',
+    'format' => 'panopoly_html_text',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '8af9868e-9f9b-4e56-995c-25b4ea2f9b0a';
+  $display->content['new-8af9868e-9f9b-4e56-995c-25b4ea2f9b0a'] = $pane;
+  $display->panels['contentmain'][2] = 'new-8af9868e-9f9b-4e56-995c-25b4ea2f9b0a';
+  $pane = new stdClass();
+  $pane->pid = 'new-81d7edfc-f6e5-4ae6-8522-42c6a6d929f3';
+  $pane->panel = 'contentmain';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'ol_forum_recent_comments-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'view_mode' => 'teaser',
+    'widget_title' => NULL,
+    'items_per_page' => NULL,
+    'exposed' => array(
+      'sort_by' => NULL,
+      'sort_order' => NULL,
+    ),
+    'use_pager' => NULL,
+    'pager_id' => NULL,
+    'offset' => NULL,
+    'link_to_view' => NULL,
+    'more_link' => NULL,
+    'path' => NULL,
+    'view_settings' => 'fields',
+    'header_type' => 'none',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 3;
+  $pane->locks = array();
+  $pane->uuid = '81d7edfc-f6e5-4ae6-8522-42c6a6d929f3';
+  $display->content['new-81d7edfc-f6e5-4ae6-8522-42c6a6d929f3'] = $pane;
+  $display->panels['contentmain'][3] = 'new-81d7edfc-f6e5-4ae6-8522-42c6a6d929f3';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['home'] = $page;
+
+  return $pages;
+
+}

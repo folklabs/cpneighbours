@@ -1,0 +1,19 @@
+name = MailChimp Lists
+description = Manage and integrate MailChimp lists.
+package = MailChimp
+core = 7.x
+dependencies[] = mailchimp
+dependencies[] = entity
+dependencies[] = entity_token
+
+configure = admin/config/services/mailchimp/lists
+
+files[] = lib/mailchimp_lists.entity.inc
+files[] = tests/mailchimp_lists.test
+
+; Information added by Drupal.org packaging script on 2016-02-23
+version = "7.x-2.13"
+core = "7.x"
+project = "mailchimp"
+datestamp = "1456187360"
+

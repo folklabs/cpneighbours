@@ -1,0 +1,64 @@
+
+$ol-action-button-padding: 0.3em;
+
+%ol-action-button {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  padding-top: $ol-action-button-padding;
+  padding-bottom: $ol-action-button-padding;
+
+  a {
+    // height: 2em
+    padding: 0.3em 10px;
+    display: block;
+    border-radius: 0.25em;
+    // font-family: $lato;
+    font-weight: 400;
+    font-size: 1.25 * $base-font-size;
+    text-align: center;
+    &:link,
+    &:visited {
+      color: $col-content-darker;
+      border: solid 1px $col-content;
+      @include gradient-vertical($col-content-lightest, $body-bg);
+    }
+    &:hover {
+      @include gradient-vertical($body-bg, white);
+      border: solid 1px $col-content;
+      color: $col-content;
+    }
+    &:active {
+      @include glow-inner($col-content-lighter, 10);
+      @include gradient-vertical($body-bg, $col-content-lightest);
+      border: solid 1px white;
+      color: $col-content-darkest;
+    }
+    /* edit: added z-index */
+    z-index: 1;
+  }
+}
+
+%ol-action-box {
+  background-color: $col-content-lightest;
+  padding: 0.5em 10px;
+  margin-bottom: 1.5em;
+}
+
+.ol-action-button {
+  @extend %ol-action-button;
+}
+
+.ol-action-box,
+.menu-block-wrapper {
+  @extend %ol-action-box;
+
+  ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+  }
+  li {
+    @extend %ol-action-button;
+  }
+}

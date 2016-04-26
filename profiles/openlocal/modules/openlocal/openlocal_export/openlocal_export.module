@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the OpenLocal Export feature.
+ */
+
+include_once 'openlocal_export.features.inc';

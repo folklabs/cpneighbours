@@ -1,0 +1,13 @@
+name = OpenLocal Export
+description = Data export stuff.
+core = 7.x
+package = OpenLocal
+version = 7.x-1.0-alpha1
+project = openlocal_export
+dependencies[] = views
+dependencies[] = views_data_export
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = openlocal_google_business_export
+features_exclude[dependencies][ctools] = ctools
+project path = profiles/openlocal/modules/openlocal
