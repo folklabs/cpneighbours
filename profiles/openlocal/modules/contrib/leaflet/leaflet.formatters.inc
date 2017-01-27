@@ -25,7 +25,7 @@ function leaflet_field_formatter_info() {
         'zoom' => array(
           'initialZoom' => '',
           'minZoom' => 1,
-          'maxZoom' => 19,
+          'maxZoom' => 19
         ),
         'icon' => array(
           'iconUrl' => '',
@@ -313,6 +313,20 @@ function leaflet_process_geofield($items = array()) {
                 }
                 $data[] = $datum;
                 break;
+
+              case 'Polygon':
+                $points = $geom_item->getComponents();
+                $components = $points[0]->getComponents();
+                $datum = array();
+                $datum['type'] = 'polygon';
+                foreach ($components as $component) {
+                  $datum['points'][] = array(
+                      'lat' => $component->getY(),
+                      'lon' => $component->getX(),
+                  );
+                }
+                $data[] = $datum;
+                break;
             }
           }
         }
@@ -341,19 +355,22 @@ function leaflet_apply_map_settings(&$map, &$features, $map_settings, $entity_ty
   $token_by_entity = array(
     'popup',
     'icon',
+    'vector_display',
   );
 
   // Apply zoom settings (will override hook_leaflet_map_info() values):
   if (isset($map_settings['zoom']['initialZoom']) && $map_settings['zoom']['initialZoom'] >= 0) {
-    $map['settings']['zoom'] = strval($map_settings['zoom']['initialZoom']);
+    $map['settings']['zoom'] = intval($map_settings['zoom']['initialZoom']);
   }
   if (isset($map_settings['zoom']['minZoom']) && $map_settings['zoom']['minZoom'] >= 0) {
-    $map['settings']['minZoom'] = strval($map_settings['zoom']['minZoom']);
+    $map['settings']['minZoom'] = intval($map_settings['zoom']['minZoom']);
   }
   if (isset($map_settings['zoom']['maxZoom']) && $map_settings['zoom']['maxZoom'] >= 0) {
-    $map['settings']['maxZoom'] = strval($map_settings['zoom']['maxZoom']);
+    $map['settings']['maxZoom'] = intval($map_settings['zoom']['maxZoom']);
   }
-
+  if (isset($map_settings['zoom']['scrollWheelZoom'])) {
+    $map['settings']['scrollWheelZoom'] = $map_settings['zoom']['scrollWheelZoom'];
+  }
   $icon = 'none';
   if (isset($map_settings['icon']['iconType'])) {
     $icon = $map_settings['icon']['iconType'];
@@ -380,41 +397,52 @@ function leaflet_apply_map_settings(&$map, &$features, $map_settings, $entity_ty
     $entity = !empty($feat['entity']) ? $feat['entity'] : NULL;
     $token_args = array('data' => array($entity_type => $entity), 'options' => array('clear' => TRUE));
     foreach ($token_by_entity as $key) {
-      if (isset($settings[$key])) {
+      if (isset($settings[$key]) && is_array($settings[$key])) {
         array_walk_recursive($settings[$key], 'leaflet_token_replace', $token_args);
       }
     }
 
     if (isset($settings['popup']['show']) && $settings['popup']['show']) {
-      $feat['popup'] = $settings['popup']['text'];
+      $feat['popup'] = trim($settings['popup']['text']);
     }
 
     // Apply Icon settings:
     if ($icon == 'html') {
-      $icon_config = array(
-        'label' => 'hidden',
-        'settings' => array(
-          'image_style' => isset($settings['icon']['iconImageStyle']) ? $settings['icon']['iconImageStyle'] : '',
-        ),
-      );
-      $icon_field = field_view_field($entity_type, $feat['entity'], $settings['icon']['html'], $icon_config);
+
+      // Maps handled by Views will have rendered HTML already.
+      if (isset($feat['rendered_html'])) {
+        $feat['html'] = $feat['rendered_html'];
+      }
+      else {
+        $icon_config = array(
+          'label' => 'hidden',
+          'settings' => array(
+            'image_style' => isset($settings['icon']['iconImageStyle']) ? $settings['icon']['iconImageStyle'] : '',
+          ),
+        );
+        $icon_field = field_view_field($entity_type, $feat['entity'], $settings['icon']['html'], $icon_config);
+        $feat['html'] = render($icon_field);
+      }
+
       if (!empty($settings['icon']['iconSize']['x']) || !empty($settings['icon']['iconSize']['y'])) {
         // We hand the size off to the API, but the rendered HTML will dictate
         // its own size, so we override that as well.
         // @todo: actually allow the API settings to control this.
         $feat['icon']['iconSize'] = $settings['icon']['iconSize'];
-        foreach (element_children($icon_field) as $i) {
-          if (!empty($settings['icon']['iconSize']['x'])) {
-            $icon_field[$i]['#item']['width'] = $settings['icon']['iconSize']['x'];
-            unset($icon_field[$i]['#item']['width']);
-          }
-          if (!empty($settings['icon']['iconSize']['y'])) {
-            $icon_field[$i]['#item']['height'] = $settings['icon']['iconSize']['y'];
-            unset($icon_field[$i]['#item']['width']);
+        if (!empty($icon_field)) {
+          foreach (element_children($icon_field) as $i) {
+            if (!empty($settings['icon']['iconSize']['x'])) {
+              $icon_field[$i]['#item']['width'] = $settings['icon']['iconSize']['x'];
+              unset($icon_field[$i]['#item']['width']);
+            }
+            if (!empty($settings['icon']['iconSize']['y'])) {
+              $icon_field[$i]['#item']['height'] = $settings['icon']['iconSize']['y'];
+              unset($icon_field[$i]['#item']['width']);
+            }
           }
         }
       }
-      $feat['html'] = render($icon_field);
+
       $feat['html_class'] = $settings['icon']['htmlClass'];
       $feat['icon']['iconAnchor'] = $settings['icon']['iconAnchor'];
     }
@@ -453,16 +481,16 @@ function leaflet_token_replace(&$subject, $key, $data = array()) {
 
 /**
  * Helper function to standardize forms between views and field formatters.
- *
+ * 
  * $group - String
  *  The name of the group element to generate.
- *
+ * 
  * $settings - Array
  *  Current form settings (for defaults, etc)
- *
+ * 
  * $options - Array
  *  Special options needed for this form element, if necessary.
- *
+ * 
  * Return - A fully loaded form element.
  */
 function leaflet_form_elements($group, $settings, $options = NULL) {
@@ -489,9 +517,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => $settings[$group]['text'],
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[popup][show]"],
-            :input[name="options[settings][popup][show]"],
-            :input[name="popup[show]"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[popup][show]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -541,6 +567,12 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['maxZoom']) ? $settings[$group]['maxZoom'] : -1,
         '#element_validate' => array('leaflet_max_zoom_validate'),
       );
+      $form_element['scrollWheelZoom'] = array(
+        '#title' => t('Scroll wheel zoom'),
+        '#description' => t('Allow map to be zoomed with the mouse wheel.'),
+        '#type' => 'checkbox',
+        '#default_value' => isset($settings[$group]['scrollWheelZoom']) ? $settings[$group]['scrollWheelZoom'] : 1,
+      );
       break;
 
     case 'icon':
@@ -569,9 +601,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#element_validate' => array('leaflet_icon_validate'),
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'marker'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'marker'),
           ),
         ),
       );
@@ -584,9 +614,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#element_validate' => array('leaflet_icon_validate'),
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'marker'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'marker'),
           ),
         ),
       );
@@ -594,19 +622,16 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#type' => 'select',
         '#title' => t('Marker field'),
         '#description' => t('Field to use as output for a map marker.'),
-        '#options' => isset($options['fields']) ? array_merge(array('' => ''), $options['fields']) : array(),
+        // See [#1796656]
+        '#options' => (array)array_merge(array('' => ''), $options['fields']),
         '#default_value' => isset($settings[$group]['html']) ? $settings[$group]['html'] : '',
         '#empty_option' => t('-- Select --'),
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'html'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'html'),
           ),
           'required' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'html'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'html'),
           ),
         ),
       );
@@ -618,9 +643,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#options' => image_style_options(FALSE, PASS_THROUGH),
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'html'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'html'),
           ),
         ),
       );
@@ -631,14 +654,10 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['htmlClass']) ? $settings[$group]['htmlClass'] : 'leaflet_map_icon',
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'html'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'html'),
           ),
           'required' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'html'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'html'),
           ),
         ),
       );
@@ -693,9 +712,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#description' => t('The point from which the shadow is shown.'),
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'marker'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'marker'),
           ),
         ),
       );
@@ -722,9 +739,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#description' => t('The point from which the marker popup opens, relative to the anchor point.'),
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[icon][iconType]"],
-            :input[name="options[settings][icon][iconType]"],
-            :input[name="iconType"]' => array('value' => 'marker'),
+            ':input[name="' . $options['path'] . '[icon][iconType]"]' => array('value' => 'marker'),
           ),
         ),
       );
@@ -768,9 +783,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['stroke']) ? $settings[$group]['stroke'] : 1,
         '#states' => array(
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -781,14 +794,10 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['color']) ? $settings[$group]['color'] : '',
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"],
-            :input[name="options[settings][vector_display][stroke]"],
-            :input[name="stroke"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"]' => array('checked' => TRUE),
           ),
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -799,14 +808,10 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['weight']) ? $settings[$group]['weight'] : '',
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"],
-            :input[name="options[settings][vector_display][stroke]"],
-            :input[name="stroke"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"]' => array('checked' => TRUE),
           ),
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -817,14 +822,10 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['opacity']) ? $settings[$group]['opacity'] : '',
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"],
-            :input[name="options[settings][vector_display][stroke]"],
-            :input[name="stroke"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"]' => array('checked' => TRUE),
           ),
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -835,14 +836,10 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['dashArray']) ? $settings[$group]['dashArray'] : '',
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"],
-            :input[name="options[settings][vector_display][stroke]"],
-            :input[name="stroke"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke]"]' => array('checked' => TRUE),
           ),
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -853,9 +850,7 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['fill']) ? $settings[$group]['fill'] : 1,
         '#states' => array(
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -866,14 +861,10 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['fillColor']) ? $settings[$group]['fillColor'] : '',
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][fill]"],
-            :input[name="options[settings][vector_display][fill]"],
-            :input[name="fill"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][fill]"]' => array('checked' => TRUE),
           ),
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -884,14 +875,10 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['fillOpacity']) ? $settings[$group]['fillOpacity'] : '',
         '#states' => array(
           'visible' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][fill]"],
-            :input[name="options[settings][vector_display][fill]"],
-            :input[name="fill"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][fill]"]' => array('checked' => TRUE),
           ),
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
@@ -902,25 +889,17 @@ function leaflet_form_elements($group, $settings, $options = NULL) {
         '#default_value' => isset($settings[$group]['clickable']) ? $settings[$group]['clickable'] : 1,
         '#states' => array(
           'enabled' => array(
-            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"],
-            :input[name="options[settings][vector_display][stroke_override]"],
-            :input[name="stroke_override"]' => array('checked' => TRUE),
+            ':input[name="' . $options['path'] . '[' . $group . '][stroke_override]"]' => array('checked' => TRUE),
           ),
         ),
       );
       break;
 
     case "tokens":
+      // See [#2176681]
       $form_element = array(
-        '#title' => t('Tokens'),
-        '#type' => 'fieldset',
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#weight' => $options['weight'],
-      );
-      $form_element['token_help'] = array(
         '#type' => 'container',
-        '#theme' => 'token_tree',
+        '#theme' => 'token_tree_link',
         '#token_types' => array($options['entity_type']),
       );
       break;
@@ -943,7 +922,7 @@ function leaflet_initial_zoom_validate($element, &$form_state, $form) {
         form_error($element, t('The initial zoom level should be greater than the minimum zoom settings'));
       }
     }
-    elseif (isset($max_zoom) && $max_zoom != -1) {
+    if (isset($max_zoom) && $max_zoom != -1) {
       if ($max_zoom < $initial_zoom) {
         form_error($element, t('The initial zoom level should be less than the maximum zoom settings'));
       }

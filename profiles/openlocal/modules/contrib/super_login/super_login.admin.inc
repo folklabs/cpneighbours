@@ -1,10 +1,15 @@
 <?php
 
-function super_login_admin_form() {
-  
+function super_login_admin_form() {  
   $form['text'] = array(
     '#type' => 'fieldset',
     '#title' => t('Text String Options'),
+  );
+  $form['text']['super_login_log_in_text'] = array(
+    '#type'  => 'textfield',
+    '#title' => t('Log In Text'),
+    '#default_value' => variable_get('super_login_log_in_text', 'Log In'),
+    '#description' => 'Enter the text to be displayed above the username field.',
   );
   $form['text']['super_login_forgot_pw_text'] = array(
     '#type'  => 'textfield',

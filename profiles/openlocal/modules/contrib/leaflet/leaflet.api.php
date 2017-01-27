@@ -13,10 +13,12 @@
  * collection of features.
  *
  * The settings array maps to the settings available to leaflet map object,
- * http://leaflet.cloudmade.com/reference.html#map-properties
+ * http://leafletjs.com/reference-1.0.2.html#map
  *
  * Layers are the available base layers for the map and, if you enable the
- * layer control, can be toggled on the map.
+ * layer control, can be toggled on the map. On top of layers, you can add
+ * overlays. Overlays are defined just a layers, but have their 'layer_type'
+ * set to 'overlay'. See drupal.org/project/leaflet_more_maps for examples.
  *
  * @return array
  *   Associative array containing a complete leaflet map definition.
@@ -44,9 +46,22 @@ function hook_leaflet_map_info() {
       ),
       'layers' => array(
         'earth' => array(
-          'urlTemplate' => 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'urlTemplate' => '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           'options' => array(
             'attribution' => 'OSM Mapnik',
+            // The switchZoom controls require multiple layers, referencing one
+            // another as "switchLayer".
+            'switchZoomBelow' => 15,
+            'switchLayer' => 'satellite',
+          ),
+        ),
+        'satellite' => array(
+          'urlTemplate' => '//otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
+          'options' => array(
+            'attribution' => 'OSM Mapnik',
+            'subdomains' => '1234',
+            'switchZoomAbove' => 15,
+            'switchLayer' => 'earth',
           ),
         ),
       ),
@@ -62,4 +77,21 @@ function hook_leaflet_map_info() {
       // ),
     ),
   );
+}
+
+/**
+ * Alters the js settings passed to the leaflet map.
+ *
+ * This hook is called when the leaflet map is being rendered and attaching the
+ * client side javascript settings.
+ *
+ * @param $settings
+ *  A javascript settings array used for building the leaflet map.
+ *
+ * @see leaflet_map_get_info()
+ * @see hook_leaflet_map_info()
+ */
+function hook_leaflet_map_prebuild_alter(&$settings) {
+  $settings['mapId'] = 'my-map-id';
+  $settings['features']['icon'] = 'my-icon-url';
 }

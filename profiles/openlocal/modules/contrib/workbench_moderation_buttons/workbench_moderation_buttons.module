@@ -11,11 +11,16 @@
 function workbench_moderation_buttons_form_node_form_alter(&$form, $state, $form_id) {
   global $user;
 
+  // By default set the state value to 0 that indicates only 'published' state
+  // exist.
+  $state_exist = 0;
+
   // This must be a node form and a node that has moderation enabled.
   // Extended to include moderation check on the individual node.
   if (!workbench_moderation_node_moderated($form['#node'])) {
     return;
   }
+
   $current_state = isset($form['workbench_moderation_state_current']['#value']) ? $form['workbench_moderation_state_current']['#value'] : variable_get('workbench_moderation_default_state_' . $form['type']['#value'], workbench_moderation_state_none());
 
   // We have a use case where a published node is being edited. This will always
@@ -26,11 +31,18 @@ function workbench_moderation_buttons_form_node_form_alter(&$form, $state, $form
 
   $next_states = array_keys(workbench_moderation_states_next($current_state, $user, $form['#node']));
   if (isset($current_state) && count($next_states)) {
+    // Disable access to existing dropdown select.
+    if (isset($form['options']['workbench_moderation_state_new'])) {
+      $form['options']['workbench_moderation_state_new']['#access'] = FALSE;
+    }
     // If any state is defined, and this user has access to them.
     $states = workbench_moderation_states();
     $actions = &$form['actions'];
     // Change value of the 'Save' action to reflect current state.
-    $actions['submit']['#value'] = $states[$current_state]->description;
+    if(!empty($states[$current_state]->description)) {
+      $actions['submit']['#value'] = $states[$current_state]->description;
+      $state_exist = 1;
+    }
 
     // Hide the 'Delete' action by default.
     if (variable_get('workbench_moderation_buttons_hide_delete', FALSE)) {
@@ -38,7 +50,8 @@ function workbench_moderation_buttons_form_node_form_alter(&$form, $state, $form
     }
     // Add the next available states as actions.
     $label_machine_names = array();
-    $label_machine_names[$states[$current_state]->description] = $current_state;
+    if($state_exist)
+      $label_machine_names[$states[$current_state]->description] = $current_state;
     foreach ($next_states as $key => $machine_name) {
       $label = $states[$machine_name]->description;
       $actions[$machine_name] = array(
@@ -57,7 +70,7 @@ function workbench_moderation_buttons_form_node_form_alter(&$form, $state, $form
     $form['#validate'][] = 'workbench_moderation_buttons_node_form_validate';
     $form['#workbench_moderation_buttons_list'] = $label_machine_names;
   }
- }
+}
 
 /**
  * Validation function for workbench_moderation_buttons_form_node_form_alter.
@@ -65,9 +78,8 @@ function workbench_moderation_buttons_form_node_form_alter(&$form, $state, $form
 function workbench_moderation_buttons_node_form_validate($form, &$form_state) {
   $values = &$form_state['values'];
   $button_list = $form['#workbench_moderation_buttons_list'];
-  $submit_button_label = $values['op'];
-  if (isset($button_list[$submit_button_label])) {
-    $values['workbench_moderation_state_new'] = $button_list[$submit_button_label];
+  if (isset($values['op']) && isset($button_list[$values['op']])) {
+    $values['workbench_moderation_state_new'] = $button_list[$values['op']];
   }
  }
- 
+

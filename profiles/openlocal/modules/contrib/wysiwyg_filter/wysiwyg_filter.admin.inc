@@ -22,7 +22,7 @@ function wysiwyg_filter_filter_wysiwyg_settings(&$form, &$form_state, $filter, $
   global $base_url;
   drupal_add_css(drupal_get_path('module', 'wysiwyg_filter') . '/wysiwyg_filter.admin.css', array('preprocess' => FALSE));
   // Load common functions.
-  module_load_include('inc', 'wysiwyg_filter');
+  form_load_include($form_state, 'inc', 'wysiwyg_filter');
 
   $settings = $filter->settings;
   $settings += $defaults;

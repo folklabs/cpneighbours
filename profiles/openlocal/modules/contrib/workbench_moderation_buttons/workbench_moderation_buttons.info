@@ -4,9 +4,9 @@ core = 7.x
 dependencies[] = workbench_moderation
 package = Workbench
 
-; Information added by Drupal.org packaging script on 2015-06-12
-version = "7.x-1.0-alpha3"
+; Information added by Drupal.org packaging script on 2016-10-31
+version = "7.x-1.0"
 core = "7.x"
 project = "workbench_moderation_buttons"
-datestamp = "1434125581"
+datestamp = "1477901040"
 
