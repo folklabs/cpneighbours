@@ -93,6 +93,8 @@ function openlocal_user_default_page_manager_pages() {
   $display->cache = array();
   $display->title = 'My issues';
   $display->uuid = '88fe5884-9db9-41fc-a3c3-d3122ba88687';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_ol_user_issues__panel_context_7103f301-fc97-4090-9206-00ba083f79e5';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
@@ -251,6 +253,8 @@ Published content',
   $display->cache = array();
   $display->title = 'Draft content';
   $display->uuid = 'eeaa7d45-25e8-4923-86ee-0638d93a9192';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_ol_user_published_content_panel_context';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();

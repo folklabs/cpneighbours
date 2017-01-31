@@ -10,7 +10,7 @@
 function openlocal_user_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: user-menu_add-content:node/add
+  // Exported menu link: user-menu_add-content:node/add.
   $menu_links['user-menu_add-content:node/add'] = array(
     'menu_name' => 'user-menu',
     'link_path' => 'node/add',
@@ -27,13 +27,14 @@ function openlocal_user_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 1,
     'expanded' => 0,
-    'weight' => 0,
+    'weight' => -48,
     'customized' => 1,
+    'parent_identifier' => 'user-menu_log-out:user/logout',
   );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Add content');
-
 
   return $menu_links;
 }

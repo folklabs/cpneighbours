@@ -10,14 +10,13 @@
 function openlocal_user_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_ol_personal_type_of_user'
+  // Exported field_base: 'field_ol_personal_type_of_user'.
   $field_bases['field_ol_personal_type_of_user'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_ol_personal_type_of_user',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',

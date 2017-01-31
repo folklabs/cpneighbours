@@ -10,22 +10,12 @@
 function openlocal_user_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'profile2-ol_personal_info-field_ol_address'
+  // Exported field_instance: 'profile2-ol_personal_info-field_ol_address'.
   $field_instances['profile2-ol_personal_info-field_ol_address'] = array(
     'bundle' => 'ol_personal_info',
-    'default_value' => array(
-      0 => array(
-        'element_key' => 'profile2|ol_personal_info|field_ol_personal_address|und|0',
-        'thoroughfare' => '',
-        'premise' => '',
-        'locality' => '',
-        'administrative_area' => 'Greater London',
-        'postal_code' => '',
-        'country' => 'GB',
-      ),
-    ),
+    'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Why are we asking for this? It allows the web site to show the approximate area you live (or work) and enables you to receive area specific communications about events or issues. Only enter as much as you wish. Please note that the post code does not identify your specific address, we always respect your privacy so do not ask for any more specific information. If you are unsure then just leave it blank, no problems.',
+    'description' => 'Why are we asking for this? It allows the web site to show the approximate area you live (or work) and enables you to receive area specific communications about events or issues. Only enter as much as you wish. Please note that the post code does not identify your specific address, we always respect your privacy so do not ask for any more specific information.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -58,9 +48,12 @@ function openlocal_user_field_default_field_instances() {
         'format_handlers' => array(
           'address' => 'address',
           'address-hide-country' => 'address-hide-country',
+          'address-hide-postal-code' => 0,
+          'address-hide-street' => 0,
           'organisation' => 0,
           'name-full' => 0,
           'name-oneline' => 0,
+          'address-optional' => 0,
         ),
       ),
       'type' => 'addressfield_standard',
@@ -68,7 +61,8 @@ function openlocal_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-ol_personal_info-field_ol_personal_type_of_user'
+  // Exported field_instance:
+  // 'profile2-ol_personal_info-field_ol_personal_type_of_user'.
   $field_instances['profile2-ol_personal_info-field_ol_personal_type_of_user'] = array(
     'bundle' => 'ol_personal_info',
     'default_value' => NULL,
@@ -103,7 +97,7 @@ function openlocal_user_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Address');
   t('Type of user');
-  t('Why are we asking for this? It allows the web site to show the approximate area you live (or work) and enables you to receive area specific communications about events or issues. Only enter as much as you wish. Please note that the post code does not identify your specific address, we always respect your privacy so do not ask for any more specific information. If you are unsure then just leave it blank, no problems.');
+  t('Why are we asking for this? It allows the web site to show the approximate area you live (or work) and enables you to receive area specific communications about events or issues. Only enter as much as you wish. Please note that the post code does not identify your specific address, we always respect your privacy so do not ask for any more specific information.');
 
   return $field_instances;
 }
