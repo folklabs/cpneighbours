@@ -10,7 +10,7 @@
 function openlocal_contact_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-ol_newsletter-body'
+  // Exported field_instance: 'node-ol_newsletter-body'.
   $field_instances['node-ol_newsletter-body'] = array(
     'bundle' => 'ol_newsletter',
     'default_value' => NULL,
@@ -60,7 +60,7 @@ function openlocal_contact_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-ol_newsletter-field_simplenews_term'
+  // Exported field_instance: 'node-ol_newsletter-field_simplenews_term'.
   $field_instances['node-ol_newsletter-field_simplenews_term'] = array(
     'bundle' => 'ol_newsletter',
     'default_value' => NULL,

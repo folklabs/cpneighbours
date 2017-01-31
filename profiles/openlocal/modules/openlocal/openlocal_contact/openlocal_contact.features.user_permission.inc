@@ -77,27 +77,21 @@ function openlocal_contact_user_default_permissions() {
   // Exported permission: 'create ol_newsletter content'.
   $permissions['create ol_newsletter content'] = array(
     'name' => 'create ol_newsletter content',
-    'roles' => array(
-      'site manager' => 'site manager',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
   // Exported permission: 'delete any ol_newsletter content'.
   $permissions['delete any ol_newsletter content'] = array(
     'name' => 'delete any ol_newsletter content',
-    'roles' => array(
-      'site manager' => 'site manager',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
   // Exported permission: 'delete own ol_newsletter content'.
   $permissions['delete own ol_newsletter content'] = array(
     'name' => 'delete own ol_newsletter content',
-    'roles' => array(
-      'site manager' => 'site manager',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -120,18 +114,14 @@ function openlocal_contact_user_default_permissions() {
   // Exported permission: 'edit any ol_newsletter content'.
   $permissions['edit any ol_newsletter content'] = array(
     'name' => 'edit any ol_newsletter content',
-    'roles' => array(
-      'site manager' => 'site manager',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
   // Exported permission: 'edit own ol_newsletter content'.
   $permissions['edit own ol_newsletter content'] = array(
     'name' => 'edit own ol_newsletter content',
-    'roles' => array(
-      'site manager' => 'site manager',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -184,7 +174,6 @@ function openlocal_contact_user_default_permissions() {
     'name' => 'send newsletter',
     'roles' => array(
       'administrator' => 'administrator',
-      'site manager' => 'site manager',
     ),
     'module' => 'simplenews',
   );
@@ -194,7 +183,6 @@ function openlocal_contact_user_default_permissions() {
     'name' => 'subscribe to newsletters',
     'roles' => array(
       'administrator' => 'administrator',
-      'site manager' => 'site manager',
     ),
     'module' => 'simplenews',
   );
