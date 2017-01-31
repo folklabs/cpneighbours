@@ -1,24 +1,13 @@
 <?php
 /**
  * @file
- * openlocal_search.features.defaultconfig.inc
+ * openlocal_search.features.user_permission.inc
  */
 
 /**
- * Implements hook_defaultconfig_features().
+ * Implements hook_user_default_permissions().
  */
-function openlocal_search_defaultconfig_features() {
-  return array(
-    'openlocal_search' => array(
-      'user_default_permissions' => 'user_default_permissions',
-    ),
-  );
-}
-
-/**
- * Implements hook_defaultconfig_user_default_permissions().
- */
-function openlocal_search_defaultconfig_user_default_permissions() {
+function openlocal_search_user_default_permissions() {
   $permissions = array();
 
   // Exported permission: 'administer search'.
@@ -28,15 +17,6 @@ function openlocal_search_defaultconfig_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'search',
-  );
-
-  // Exported permission: 'administer search_api'.
-  $permissions['administer search_api'] = array(
-    'name' => 'administer search_api',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'search_api',
   );
 
   // Exported permission: 'search content'.
