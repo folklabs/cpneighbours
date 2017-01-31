@@ -21,6 +21,5 @@ function openlocal_news_menu_default_menu_custom() {
   t('News action buttons.');
   t('OL News actions');
 
-
   return $menus;
 }

@@ -100,6 +100,8 @@ function openlocal_news_default_page_manager_pages() {
   $display->cache = array();
   $display->title = 'News';
   $display->uuid = '7e26167e-4e1c-4944-b44a-90a437207e17';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_openlocal_news_home_page_panel_context';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();

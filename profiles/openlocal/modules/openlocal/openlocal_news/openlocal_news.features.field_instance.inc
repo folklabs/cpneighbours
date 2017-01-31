@@ -10,7 +10,7 @@
 function openlocal_news_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-ol_news_article-body'
+  // Exported field_instance: 'node-ol_news_article-body'.
   $field_instances['node-ol_news_article-body'] = array(
     'bundle' => 'ol_news_article',
     'default_value' => NULL,
@@ -68,7 +68,7 @@ function openlocal_news_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-ol_news_article-field_featured_categories'
+  // Exported field_instance: 'node-ol_news_article-field_featured_categories'.
   $field_instances['node-ol_news_article-field_featured_categories'] = array(
     'bundle' => 'ol_news_article',
     'default_value' => NULL,
@@ -111,7 +111,7 @@ function openlocal_news_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-ol_news_article-field_featured_image'
+  // Exported field_instance: 'node-ol_news_article-field_featured_image'.
   $field_instances['node-ol_news_article-field_featured_image'] = array(
     'bundle' => 'ol_news_article',
     'deleted' => 0,
@@ -192,7 +192,7 @@ function openlocal_news_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-ol_news_article-field_ol_tags'
+  // Exported field_instance: 'node-ol_news_article-field_ol_tags'.
   $field_instances['node-ol_news_article-field_ol_tags'] = array(
     'bundle' => 'ol_news_article',
     'default_value' => NULL,
