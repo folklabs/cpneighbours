@@ -44,7 +44,7 @@ function openlocal_user_field_default_field_instances() {
         'available_countries' => array(
           'GB' => 'GB',
         ),
-        'default_country' => '',
+        'default_country' => 'GB',
         'format_handlers' => array(
           'address' => 'address',
           'address-hide-country' => 'address-hide-country',
