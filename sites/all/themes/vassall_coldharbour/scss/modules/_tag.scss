@@ -13,7 +13,7 @@
   a {
     &:link,
     &:visited {
-      background-color: transparentize($secondary-color, 10%);
+      background-color: transparentize($secondary-color, 0.1);
       border: solid 1px $col-links-lighter;
       border-radius: 9999px;
       color: $col-links;
