@@ -4642,7 +4642,7 @@ nav.top-bar .search-form {
   display: inline-block;
   margin: .5em 10px .5em 0; }
   .pane-node-field-ol-business-tags li a:link, .field-name-field-ol-tags li a:link, .pane-node-field-ol-business-tags li a:visited, .field-name-field-ol-tags li a:visited {
-    background-color: #edf6e9;
+    background-color: rgba(86, 175, 49, 0.9);
     border: solid 1px #d4ebcb;
     border-radius: 9999px;
     color: #56af31;
